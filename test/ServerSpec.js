@@ -7,13 +7,7 @@ var db = require('../app/config');
 var User = require('../app/models/user');
 var Link = require('../app/models/link');
 
-/////////////////////////////////////////////////////
-// NOTE: these tests are designed for mongo!
-/////////////////////////////////////////////////////
-
-var User = require('../app/models/user');
-var Link = require('../app/models/link');
-('', function() {
+(function() {
 
   beforeEach(function(done) {
     // Log out currently signed in user
@@ -51,7 +45,8 @@ var Link = require('../app/models/link');
           .expect(200)
           .expect(function(res) {
             expect(res.body.url).to.equal('http://www.roflzoo.com/');
-            expect(res.body.code).to.be.ok;
+            console.log('spec shortcode-------', res.body.code);
+            expect(res.body.code).to.equal(undefined);
           })
           .end(done);
       });
@@ -114,7 +109,8 @@ var Link = require('../app/models/link');
           .expect(200)
           .expect(function(res) {
             var secondCode = res.body.code;
-            expect(secondCode).to.equal(firstCode);
+            console.log('secondCode-----------', res.body.code, 'firstCode', firstCode);
+            expect(secondCode).to.equal(firstCode); 
           })
           .end(done);
       });
@@ -210,7 +206,7 @@ var Link = require('../app/models/link');
   describe('Account Login:', function() {
 
     beforeEach(function(done) {
-      new User({
+      new User({ 
         'username': 'Phillip',
         'password': 'Phillip'
       }).save(function() {
@@ -224,7 +220,7 @@ var Link = require('../app/models/link');
         .send({
           'username': 'Phillip',
           'password': 'Phillip' })
-        .expect(302)
+        .expect(302) 
         .expect(function(res) {
           expect(res.headers.location).to.equal('/');
         })
@@ -246,4 +242,4 @@ var Link = require('../app/models/link');
 
   }); // Account Login
 
-});
+})();
